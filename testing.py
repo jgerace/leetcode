@@ -11,3 +11,17 @@ def listItemsEqual(one, two) -> bool:
         except ValueError:
             return False
     return True
+
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
+def listNodeToList(head: ListNode) -> List[int]:
+    output = []
+    while head is not None:
+        output.append(head.val)
+        head = head.next
+    return output

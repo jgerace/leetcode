@@ -11,7 +11,7 @@ def search(numbers, start, end, target) -> int:
     if target > numbers[idx]:
         return search(numbers, idx + 1, end, target)
     else:
-        return search(numbers[:idx], start, idx - 1, target)
+        return search(numbers, start, idx - 1, target)
 
 
 if __name__ == '__main__':

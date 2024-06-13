@@ -1,3 +1,4 @@
+from collections import deque
 from typing import List
 
 
@@ -24,4 +25,27 @@ def listNodeToList(head: ListNode) -> List[int]:
     while head is not None:
         output.append(head.val)
         head = head.next
+    return output
+
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+def treeNodeToBfsList(root: TreeNode) -> List[int]:
+    output = []
+    queue = deque()
+    queue.append(root)
+
+    while len(queue) > 0:
+        node = queue.pop()
+        if node is not None:
+            queue.appendleft(node.left)
+            queue.appendleft(node.right)
+            output.append(node.val)
+        else:
+            output.append(None)
     return output

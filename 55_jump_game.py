@@ -17,8 +17,8 @@ Explanation: You will always arrive at index 3 no matter what. Its maximum jump 
 
 Constraints:
 
-    1 <= nums.length <= 104
-    0 <= nums[i] <= 105
+    1 <= nums.length <= 10^4
+    0 <= nums[i] <= 10^5
 """
 from typing import List
 
@@ -30,15 +30,19 @@ class Solution:
             return True
 
         # If you can get to the last index from any previous index, then you can jump
-        # But you have to recurse through the subarray to see if you can get to that previous index, etc
-        can = False
-        lastIdx = len(nums) - 1
-        for idx in range(lastIdx-1, -1, -1):
+        # The greedy thing to do is to iterate backwards and find the first index that allows
+        # you to jump to the last index. Then see if you can jump to that previous index, etc.
+        last_idx = len(nums) - 1
+        previous_idx = last_idx - 1
+        while previous_idx >= 0:
+            if nums[previous_idx] + previous_idx >= last_idx:
+                last_idx = previous_idx
+            previous_idx -= 1
 
-            if nums[idx] + idx >= lastIdx and self.canJump(nums[:idx+1]):
-                can = True
+        if last_idx <= 0:
+            return True
 
-        return can
+        return False
 
 
 if __name__ == '__main__':
@@ -52,4 +56,10 @@ if __name__ == '__main__':
     assert val is True
 
     val = Solution().canJump([0, 3])
+    assert val is False
+
+    val = Solution().canJump(
+        [2, 0, 6, 9, 8, 4, 5, 0, 8, 9, 1, 2, 9, 6, 8, 8, 0, 6, 3, 1, 2, 2, 1, 2, 6, 5, 3, 1, 2, 2, 6, 4, 2, 4, 3, 0, 0,
+         0, 3, 8, 2, 4, 0, 1, 2, 0, 1, 4, 6, 5, 8, 0, 7, 9, 3, 4, 6, 6, 5, 8, 9, 3, 4, 3, 7, 0, 4, 9, 0, 9, 8, 4, 3, 0,
+         7, 7, 1, 9, 1, 9, 4, 9, 0, 1, 9, 5, 7, 7, 1, 5, 8, 2, 8, 2, 6, 8, 2, 2, 7, 5, 1, 7, 9, 6])
     assert val is False

@@ -20,22 +20,35 @@ Explanation: In this case, no transactions are done and the max profit = 0.
 
 Constraints:
 
-    1 <= prices.length <= 105
-    0 <= prices[i] <= 104
+    1 <= prices.length <= 10^5
+    0 <= prices[i] <= 10^4
 '''
 from typing import List
 
 
 class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
+    def maxProfitBruteForce(self, prices: List[int]) -> int:
         maxProfit = 0
         if len(prices) == 1:
             return 0
-        for buyIdx in range(len(prices)-1):
-            for sellIdx in range(buyIdx+1, len(prices)):
+        for buyIdx in range(len(prices) - 1):
+            for sellIdx in range(buyIdx + 1, len(prices)):
                 profit = prices[sellIdx] - prices[buyIdx]
                 if profit > maxProfit:
                     maxProfit = profit
+        return maxProfit
+
+    def maxProfit(self, prices: List[int]) -> int:
+        if len(prices) == 1:
+            return 0
+
+        maxProfit = 0
+        minPrice = prices[0]
+        for idx in range(1, len(prices)):
+            minPrice = min(prices[idx], minPrice)
+            profit = prices[idx] - minPrice
+            maxProfit = max(maxProfit, profit)
+
         return maxProfit
 
 

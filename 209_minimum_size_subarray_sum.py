@@ -59,6 +59,31 @@ class Solution:
         else:
             return minLen
 
+    def anotherPractice(self, target: int, nums: List[int]) -> int:
+        for num in nums:
+            if num == target:
+                return 1
+
+        head = 0
+        tail = 0
+        min_len = None
+        cur_sum = nums[0]
+        while tail <= head < len(nums):
+            if cur_sum >= target:
+                if not min_len:
+                    min_len = head - tail
+                else:
+                    min_len = min(min_len, head - tail + 1)
+                cur_sum -= nums[tail]
+                tail += 1
+            elif cur_sum < target:
+                if head == len(nums) - 1:
+                    break
+                head += 1
+                cur_sum += nums[head]
+
+        return min_len or 0
+
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
         for num in nums:
             if num >= target:
@@ -82,7 +107,7 @@ class Solution:
                 minLen = min(minLen, end - start + 1)
                 start += 1
 
-        if minLen == len(nums)+1:
+        if minLen == len(nums) + 1:
             return 0
         else:
             return minLen

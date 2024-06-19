@@ -54,7 +54,8 @@ class Solution:
             if totalGas >= 0:
                 return stationIdx
         return -1
-    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+
+    def savesies(self, gas: List[int], cost: List[int]) -> int:
         if sum(gas) < sum(cost):
             return -1
 
@@ -72,6 +73,22 @@ class Solution:
         # of gas used in all previous stations. Since we know there is only one answer, this must be it.
         return startingStation
 
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        if sum(gas) < sum(cost):
+            return -1
+
+        starting_station = 0
+        total_gas = 0
+        for idx in range(len(gas)):
+            total_gas += gas[idx]
+            if total_gas - cost[idx] < 0:
+                starting_station = idx + 1
+                total_gas = 0
+            else:
+                total_gas -= cost[idx]
+
+        return starting_station
+
 
 if __name__ == '__main__':
     output = Solution().canCompleteCircuit(gas=[1, 2, 3, 4, 5], cost=[3, 4, 5, 1, 2])
@@ -79,3 +96,9 @@ if __name__ == '__main__':
 
     output = Solution().canCompleteCircuit(gas=[2, 3, 4], cost=[3, 4, 3])
     assert output == -1
+
+    output = Solution().canCompleteCircuit(gas=[5, 1, 2, 3, 4], cost=[4, 4, 1, 5, 1])
+    assert output == 4
+
+    output = Solution().canCompleteCircuit(gas=[3, 1, 1], cost=[1, 2, 2])
+    assert output == 0

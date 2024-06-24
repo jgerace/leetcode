@@ -40,8 +40,8 @@ It does not matter what you leave beyond the returned k (hence they are undersco
 
 Constraints:
 
-    1 <= nums.length <= 3 * 104
-    -104 <= nums[i] <= 104
+    1 <= nums.length <= 3 * 10^4
+    -10^4 <= nums[i] <= 10^4
     nums is sorted in non-decreasing order.
 
 '''
@@ -57,7 +57,7 @@ class Solution:
         curInstances = 1
         curPtr = 1
         for idx in range(1, len(nums)):
-            if (nums[idx] != curVal):
+            if nums[idx] != curVal:
                 nums[curPtr] = nums[idx]
                 curVal = nums[idx]
                 curPtr += 1

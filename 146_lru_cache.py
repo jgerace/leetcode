@@ -71,13 +71,14 @@ class LinkedList:
             self.tail = node.prev
         if node == self.head:
             self.head = node.next
+        node.prev = None
+        node.next = None
 
 
 class LRUCache:
 
     def __init__(self, capacity: int):
         self.capacity = capacity
-        self.num_items = 0
         self.cache = {}
         self.node_list = LinkedList()
 
@@ -96,6 +97,7 @@ class LRUCache:
         if existing_node:
             self.node_list.remove(existing_node)
             del self.cache[existing_node.key]
+            del existing_node
 
         if len(self.cache) >= self.capacity:
             # evict record
@@ -103,6 +105,7 @@ class LRUCache:
                 tail_node = self.node_list.tail
                 self.node_list.remove(tail_node)
                 del self.cache[tail_node.key]
+                del tail_node
 
         self.node_list.add_to_head(node)
         self.cache[key] = node

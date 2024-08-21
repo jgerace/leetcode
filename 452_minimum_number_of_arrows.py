@@ -38,10 +38,32 @@ from typing import List
 
 class Solution:
     def findMinArrowShots(self, points: List[List[int]]) -> int:
-        return 0
+        print("*****")
+        sorted_points = sorted(points, key=lambda x: x[0])
+        print("sorted points:", sorted_points)
+        count = 0
+        idx_start = 0
+        idx_end = 0
+        while idx_start <= idx_end < len(points):
+            point = sorted_points[idx_start]
+            print("analyzing", point)
+            max_start = point[0]
+            min_end = point[1]
+            while (idx_end < len(points) and
+                   max_start <= sorted_points[idx_end][0] <= min_end):
+                max_start = max(max_start, sorted_points[idx_end][0])
+                min_end = min(min_end, sorted_points[idx_end][1])
+                print("   point", sorted_points[idx_end], "overlaps")
+                idx_end += 1
+            idx_start = idx_end
+            count += 1
+
+        print("count:", count)
+        return count
 
 
 if __name__ == "__main__":
+    '''
     output = Solution().findMinArrowShots([[10, 16], [2, 8], [1, 6], [7, 12]])
     assert output == 2
 
@@ -49,4 +71,8 @@ if __name__ == "__main__":
     assert output == 4
 
     output = Solution().findMinArrowShots([[1, 2], [2, 3], [3, 4], [4, 5]])
+    assert output == 2
+    '''
+    output = Solution().findMinArrowShots(
+        [[3, 9], [7, 12], [3, 8], [6, 8], [9, 10], [2, 9], [0, 9], [3, 9], [0, 6], [2, 8]])
     assert output == 2

@@ -38,32 +38,35 @@ class Solution:
         queue = deque()
         len_genes = 8
 
-        def get_transition_genes(start: str, end: str, start_count: int) -> None:
-            for idx in range(len_genes):
-                if start[idx] != end[idx]:
-                    temp_gene = list(start)
-                    temp_gene[idx] = end[idx]
-                    temp_gene = "".join(temp_gene)
-                    if temp_gene in bank:
-                        print("appending:", temp_gene)
-                        queue.append((temp_gene, start_count))
-                    else:
-                        print("gene:", temp_gene, "not in bank...skipping")
-            print("queue:", queue)
-
-        get_transition_genes(startGene, endGene, 1)
+        queue.append((startGene, 0))
+        used = set()
         while len(queue):
-            gene, counter = queue.popleft()
-            print("popping:", gene, counter)
-            if gene == endGene:
+            cur_gene, counter = queue.popleft()
+            print("popping:", cur_gene, counter)
+            if cur_gene == endGene:
+                print("  match:", counter)
                 return counter
-            get_transition_genes(gene, endGene, counter + 1)
+            for gene in bank:
+                if gene in used:
+                    continue
+                print("  comparing to", gene)
+                diff_ct = 0
+                for idx in range(len_genes):
+                    if cur_gene[idx] != gene[idx]:
+                        diff_ct += 1
+                if diff_ct == 1:
+                    print("  queueing:", gene, counter + 1)
+                    queue.append((gene, counter + 1))
+                    used.add(gene)
+                else:
+                    print("  too many diffs:", diff_ct)
 
+        print("no match")
         return -1
 
 
 if __name__ == "__main__":
-    '''
+
     output = Solution().minMutation("AACCGGTT", "AACCGGTA", ["AACCGGTA"])
     assert output == 1
 
@@ -72,6 +75,6 @@ if __name__ == "__main__":
 
     output = Solution().minMutation("AACCGGTT", "AACCGGTA", [])
     assert output == -1
-    '''
+
     output = Solution().minMutation("AACCGGTT", "AAACGGTA", ["AACCGATT", "AACCGATA", "AAACGATA", "AAACGGTA"])
     assert output == 4

@@ -35,23 +35,38 @@ from typing import List
 
 
 class Solution:
-    def jump(self, nums: List[int]) -> int:
+
+    def jump_backwards(self, nums: List[int]) -> int:
         if len(nums) == 1:
-            # Assuming that if nums = [0] and you start on the first element, then you don't need to jump
             return 0
 
-        # If you can get to the last index from any previous index, compare the number of jumps to get
-        # to the last index from each of those indices. Take the minimum.
-        # But you have to recurse through the subarray to count the min jumps to that previous index, etc
         minJumps = len(nums)
         lastIdx = len(nums) - 1
         for idx in range(lastIdx - 1, -1, -1):
             jumps = 0
             if nums[idx] + idx >= lastIdx:
-                jumps += 1 + self.jump(nums[:idx+1])
+                jumps += 1 + self.jump(nums[:idx + 1])
                 if jumps < minJumps:
                     minJumps = jumps
         return minJumps
+
+    def jump(self, nums: List[int]) -> int:
+        print("*****")
+        if len(nums) == 1:
+            return 0
+
+        result = 0
+        end = 0
+        farthest = 0
+        for idx in range(len(nums)-1):
+            farthest = max(farthest, nums[idx] + idx)
+            if idx == end:
+                result += 1
+                end = farthest
+            if end >= len(nums)-1:
+                break
+        print(result)
+        return result
 
 
 if __name__ == '__main__':
@@ -66,3 +81,8 @@ if __name__ == '__main__':
 
     val = Solution().jump([1, 3])
     assert val == 1
+
+    val = Solution().jump(
+        [5, 6, 4, 4, 6, 9, 4, 4, 7, 4, 4, 8, 2, 6, 8, 1, 5, 9, 6, 5, 2, 7, 9, 7, 9, 6, 9, 4, 1, 6, 8, 8, 4, 4, 2, 0, 3,
+         8, 5])
+    assert val == 5

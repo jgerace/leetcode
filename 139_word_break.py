@@ -34,7 +34,26 @@ from typing import List
 
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-        return False
+        hash_table = {}
+
+        def logic(input: str):
+            if input in hash_table:
+                return hash_table[input]
+            if not input:
+                return True
+
+            for word in wordDict:
+                len_word = len(word)
+                print("looking at", word, len_word)
+                if input.startswith(word):
+                    result = logic(input[len_word:])
+                    if result:
+                        hash_table[input] = result
+                        return result
+            hash_table[input] = False
+            return False
+
+        return logic(s)
 
 
 if __name__ == "__main__":
@@ -45,4 +64,17 @@ if __name__ == "__main__":
     assert output is True
 
     output = Solution().wordBreak(s="catsandog", wordDict=["cats", "dog", "sand", "and", "cat"])
+    assert output is False
+
+    output = Solution().wordBreak(s="goalspecial", wordDict=["go", "goal", "goals", "special"])
+    assert output is True
+
+    output = Solution().wordBreak(
+        s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",
+        wordDict=["a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa", "aaaaaaaaa", "aaaaaaaaaa"])
+    assert output is False
+
+    output = Solution().wordBreak(
+        s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        wordDict=["aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa", "aaaaaaaaa", "aaaaaaaaaa", "ba"])
     assert output is False

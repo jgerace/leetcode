@@ -26,11 +26,8 @@ from collections import defaultdict
 # TODO
 class Solution:
     def removeDuplicateLetters(self, s: str) -> str:
-        hash_table = defaultdict(int)
-        for char in list(s):
-            hash_table[char] += 1
-
-        return ""
+        result = ""
+        return result
 
 
 if __name__ == "__main__":

@@ -24,6 +24,7 @@ Constraints:
 from typing import List
 
 
+# TODO: Did I submit this?
 class Solution:
     def hIndex(self, citations: List[int]) -> int:
         maxH = 0

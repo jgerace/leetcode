@@ -42,17 +42,11 @@ class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         prefixes = [1]  # product of all nums of index < idx
         for idx in range(1, len(nums)):
-            product = 1
-            for ii in range(idx):
-                product *= nums[ii]
-            prefixes.append(product)
+            prefixes.append(prefixes[idx-1] * nums[idx-1])
 
-        suffixes = [1]
+        suffixes = [1]  # product of all nums of index > idx
         for idx in range(len(nums)-2, -1, -1):
-            product = 1
-            for ii in range(len(nums)-1, idx, -1):
-                product *= nums[ii]
-            suffixes.insert(0, product)
+            suffixes.insert(0, suffixes[0] * nums[idx+1])
 
         return [prefixes[idx] * suffixes[idx] for idx in range(len(nums))]
 
